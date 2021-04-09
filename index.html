@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Page</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<!-- Animate CSS -->
+<link rel="stylesheet" href="animate/animate.min.css"/>
+<!-- SweetAlert CSS -->
+<link rel="stylesheet" href="sweetalert2/sweetalert2.min.css"> 
+<link rel="stylesheet" href="style/estilos.css">
+<link rel="stylesheet" href="style/css.css">
+
+</head>
+<body>
+
+<header>
+  <button id="btn9" class="btn btn-dark btn-lg btn-block">SweetAlert y Animate (click here! I am animated!)
+  </button>
+</header>
+
+<br><hr><br>
+<div class="container">
+<h1>SweetAlert y Animate</h1>             
+	<div class="row">
+		<div class="col-lg-3">
+			<button id="btn1" class="btn btn-outline-dark btn-lg btn-block">Básico 1</button>
+			<button id="btn2" class="btn btn-outline-dark btn-lg btn-block">Tipos de popup 2</button>      
+		</div>
+
+		<div class="col-lg-3">
+			<button id="btn3" class="btn btn-outline-dark btn-lg btn-block">Con Imagen 3</button>
+			<button id="btn4" class="btn btn-outline-dark btn-lg btn-block">Con Posición 4</button>      
+		</div>
+
+		<div class="col-lg-3">
+			<button id="btn5" class="btn btn-dark btn-lg btn-block">Animada 5</button>
+			<button id="btn6" class="btn btn-dark btn-lg btn-block">Fondo (img) 6</button>      
+		</div>
+
+		<div class="col-lg-3">
+			<button id="btn7" class="btn btn-dark btn-lg btn-block">Progresivo 7</button>
+			<button id="btn8" class="btn btn-dark btn-lg btn-block">Timer 8</button>      
+		</div>
+	</div>
+</div>
+
+<br><hr><br>
+
+  <h3 class="animate__animated animate__heartBeat">An animated element</h3>
+<!-- jquery JS	-->
+<script src="jquery/jquery-3.3.1.min.js"></script>
+<!-- popper JS  -->
+<script src="popper/popper.min.js"></script>
+<!-- bootstrap JS  -->
+<script src="js/bootstrap.min.js"></script>
+<!--    Plugin sweet Alert 2  -->
+<script src="sweetalert2/sweetalert2.all.min.js"></script>
+
+
+
+<script>
+
+$("#btn0").click(function(){
+    alert("Mensaje con Alert");    
+});
+
+
+//ejemplo básico
+$("#btn1").click(function(){
+    Swal.fire('Sweet Alert 2');
+});	
+
+//con opción de TYPE  //tipos de popups: error, success, warning, info, question
+$("#btn2").click(function(){
+    /*Swal.fire({
+        //error
+        type: 'error',
+        title: 'Error',
+        text: '¡Algo salió mal!',        
+    });*/
+    Swal.fire({        
+        type: 'success',
+        title: 'Exito',
+        text: '¡Perfecto!',        
+    });
+});	
+
+//Con imagen de fondo
+$("#btn3").click(function(){
+    Swal.fire({
+        imageUrl: 'img/html5.png',
+        imageHeight: 200,
+        imageAlt: 'A tall image'
+    });
+});	
+
+//Con posicionamiento - por defecto es centrada
+//Posibles valores: 'top', 'top-start', 'top-end', 'center', 'center-start', 'center-end', 'bottom', 'bottom-start', or 'bottom-end'.
+
+$("#btn4").click(function(){
+    Swal.fire({
+      position: 'top-start', //permite "top-end"
+      type: 'success',
+      title: 'Tu trabajo ha sido grabado',
+      showConfirmButton: false,
+      timer: 2000 //el tiempo que dura el mensaje en ms
+    });    
+});
+
+//Animada tiene que ir en la propiedad popup
+// popup: 'animated nombreDelEfecto'
+$("#btn5").click(function(){
+    Swal.fire({
+        title: 'Custom animation with Animate.css',
+        animation: false,
+        customClass: {
+        popup: 'animate__animated animate__bounce'
+    }
+    });
+});	
+
+//cambiando el background
+$("#btn6").click(function(){
+    Swal.fire({
+        title: 'Personalizando ancho, padding y background.',
+        width: 300,
+        padding: '5em',
+        background: '#fff url(img/imagen_600x500.png)', // Fondo de la caja de dialogo 
+        backdrop: `
+        rgba(5, 5, 25, 0.4)
+        url("img/nyan-cat.gif") 
+        center left
+        no-repeat
+        `
+    });
+});
+
+//Progresivo
+$("#btn7").click(function(){
+    Swal.mixin({
+      input: 'text', //puede ser text, number, email, password, textarea, select, radio
+      confirmButtonText: 'Siguiente &rarr;',
+      showCancelButton: true,
+      progressSteps: ['1', '2', '3']
+    }).queue([
+      {
+        title: 'Pregunta 1',
+        text: '¿Color favorito?'
+      },
+      {
+        title: 'Pregunta 2',
+        text: '¿Animal favorito?'
+      },
+        {
+        title: 'Pregunta 3',
+        text: '¿Pais de origen?'
+      }      
+    ]).then((result) => {
+      if (result.value) {
+        Swal.fire({
+          title: '¡Completado!',
+          html:
+            'Tus respuestas: <pre><code>' +
+              JSON.stringify(result.value) +
+            '</code></pre>',
+          confirmButtonText: 'OK'
+        })
+      }
+    });    
+});
+
+//con TIMER
+let timerInterval
+$("#btn8").click(function(){
+    Swal.fire({
+      title: 'Auto close alert!',
+      html: 'I will close in <strong></strong> seconds.',
+      timer: 1500, //tiempo del timer
+      onBeforeOpen: () => {
+        Swal.showLoading()
+        timerInterval = setInterval(() => {
+          Swal.getContent().querySelector('strong')
+            .textContent = Swal.getTimerLeft()
+        }, 300)
+      },
+      onClose: () => {
+        clearInterval(timerInterval)
+      }
+    }).then((result) => {
+      if (
+        // Read more about handling dismissals
+        result.dismiss === Swal.DismissReason.timer
+      ) {
+       //alert("OK");
+       console.log('I was closed by the timer')
+      }
+    });    
+});
+
+function alerta(){
+Swal.fire({
+   title: "¡ERROR!",
+   text: "Esto es un mensaje de error",
+   type: "error",
+ });
+}  
+
+function setclass()
+{
+  //alert("Mensaje con Alert"); 
+  const demo = document.querySelector('#btn9');
+  demo.classList.add('animate__animated', 'animate__bounce');   
+};
+setclass();            
+                          
+const btn9 = document.querySelector('#btn9');
+//const titulo = document.querySelector('#titulo');
+btn9.addEventListener("click", botonFun, false);
+//alert("OK");
+function botonFun()
+{
+//demo.classList.add('', '');
+btn9.classList.add('animate__animated', 'animate__heartBeat');
+setTimeout(function()
+  {
+    btn9.setAttribute("class", "btn btn-dark btn-lg btn-block"); 
+  },1000);
+}
+
+document.documentElement.style.setProperty('--animate-duration', '1.5s'); 
+</script>
+</body>
+</html> 
